@@ -1,0 +1,5 @@
+Django
+# データベースとしてPostgreSQLを使う場合は、psycopg2-binary も追加
+psycopg2-binary
+python-dotenv
+django-cors-headers

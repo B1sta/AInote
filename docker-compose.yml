@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  # 3. PostgreSQLデータベースサービス
+  db:
+    image: postgres:15-alpine
+    container_name: ainote_db
+    
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    
+    # 接続可能になるまで待機させるための設定を追加
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"] # $$ はenv_fileの変数を使うためのエスケープ
+      interval: 5s
+      timeout: 5s
+      retries: 5 # 5回失敗したらコンテナを停止（最大25秒待機）
+
+  # 1. Djangoバックエンドサービス
+  backend:
+    build: ./backend
+    container_name: ainote_backend
+    # 開発環境でマイグレーションやサーバー起動を確実に行うためのコマンド
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000" 
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    
+    # dbコンテナが「service_healthy」になるまで待機するよう修正
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # 2. Reactフロントエンドサービス
+  frontend:
+    build: ./frontend
+    container_name: ainote_frontend
+    command: npm start
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
