@@ -1,4 +1,4 @@
-# backend/ainote_project/urls.py (修正後の全文)
+# backend/ainote_project/urls.py (ファイル全体をこれで上書きしてください)
 
 from django.contrib import admin
 from django.urls import path
@@ -12,9 +12,6 @@ urlpatterns = [
     path('api/login/', APILoginView.as_view(), name='api_login'), 
     path('api/logout/', api_logout, name='api_logout'),           
     
-    # 👇 サインアップAPIを追加
     path('api/signup/', api_signup, name='api_signup'), 
-    
-    # 👇 CSRFトークン取得用APIを追加
     path('api/csrf/', get_csrf_token, name='api-csrf'),
 ]

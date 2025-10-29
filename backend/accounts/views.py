@@ -1,4 +1,4 @@
-# backend/accounts/views.py (修正後の全文)
+# backend/accounts/views.py (ファイル全体をこれで上書きしてください)
 
 from django.contrib.auth.views import LoginView
 from django.http import JsonResponse
@@ -16,12 +16,10 @@ def get_csrf_token(request):
     """CSRFトークンをクッキーにセットして返す"""
     return JsonResponse({'detail': 'CSRF cookie set'})
 
-# @csrf_exempt を削除
 def api_root(request):
     """ルートパスがアクセスされたときに実行される"""
     return JsonResponse({'status': 'ok', 'message': 'Django backend is running correctly. Access /api/login/ for authentication.'})
 
-# @method_decorator(csrf_exempt...) を削除
 class APILoginView(LoginView):
      def post(self, request, *args, **kwargs):
          super().post(request, *args, **kwargs)
@@ -31,14 +29,12 @@ class APILoginView(LoginView):
          else:
              return JsonResponse({'success': False, 'message': '認証情報が不正です'}, status=401)
 
-# @csrf_exempt を削除
 def api_logout(request):
     if request.method == 'POST':
         logout(request)
         return JsonResponse({'success': True})
     return JsonResponse({'error': 'POSTメソッドが必要です'}, status=405)
 
-# @csrf_exempt を削除
 def api_signup(request):
     """新しいユーザーアカウントを作成するAPI"""
     if request.method == 'POST':

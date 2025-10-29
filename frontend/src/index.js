@@ -1,3 +1,4 @@
+// frontend/src/index.js (ファイル全体をこれで上書きしてください)
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -5,10 +6,11 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
 
-//cookie受信を許可
-axios.defaults.withCredentials = true;
-axios.defaults.xsrfCookieName = 'csrftoken'; // タイプミスがないか？
+// --- 👇 以下の3行を追加 ---
+axios.defaults.withCredentials = true; // クッキー送受信を許可
+axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+// -------------------------
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -17,7 +19,4 @@ root.render(
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

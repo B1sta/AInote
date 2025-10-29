@@ -152,17 +152,19 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 
-# 1. Reactからのアクセスを許可
+# 1. React (localhost:3000) を信頼できるオリジンとして設定
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+]
+
+# 2. Reactからのクッキー（認証セッション）送受信を許可
+CORS_ALLOW_CREDENTIALS = True  
+
+# 3. Reactからのアクセスを許可
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
 
-# 2. クッキー（認証セッション）の送受信を許可
-CORS_ALLOW_CREDENTIALS = True
-
-# 3. CSRFクッキーとセッションクッキーの設定（開発用）
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",
-]
+# 4. 開発環境 (HTTP) でクッキーを送受信するための設定
 SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_SAMESITE = 'Lax'
