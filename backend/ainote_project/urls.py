@@ -16,14 +16,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from accounts.views import APILoginView, api_logout, api_root
+from accounts.views import get_csrf_token
+from accounts.views import APILoginView, api_logout, api_root, api_signup
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # 👇 APIエンドポイントを設定
-    path('api/login/', APILoginView.as_view(), name='api_login'), 
-    path('api/logout/', api_logout, name='api_logout'), 
+    # ⚠️ 1. ルートパスを追加
+    path('', api_root, name='root'), 
     
-    path('', api_root, name='root'), # http://localhost:8000/ に対応
-    # path('accounts/', include('django.contrib.auth.urls')), # テンプレートベースの認証URLは削除またはコメントアウト
+    # 2. 既存のログイン/ログアウト
+    path('api/login/', APILoginView.as_view(), name='api_login'), 
+    path('api/logout/', api_logout, name='api_logout'),           
+    
+    # ⚠️ 3. サインアップAPIを追加
+    path('api/signup/', api_signup, name='api_signup'), 
+    
+    #CSRF用のトークン
+    path('api/csrf/', get_csrf_token, name='api-csrf'),
+
 ]

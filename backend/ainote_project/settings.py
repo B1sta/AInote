@@ -134,3 +134,23 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ⚠️ 1. クッキー（認証セッション）の送受信を許可する
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000", 
+]
+
+
+# ⚠️ 2. React開発サーバーのURLを明示的に許可する
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    # (将来的に本番ドメインや他の環境のURLを追加します)
+]
+
+
+SESSION_COOKIE_SAMESITE = 'Lax' 
+CSRF_COOKIE_SAMESITE = 'Lax'
