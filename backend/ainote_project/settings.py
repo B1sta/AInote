@@ -152,5 +152,17 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 
-SESSION_COOKIE_SAMESITE = 'Lax' 
+# 1. Reactからのアクセスを許可
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+
+# 2. クッキー（認証セッション）の送受信を許可
+CORS_ALLOW_CREDENTIALS = True
+
+# 3. CSRFクッキーとセッションクッキーの設定（開発用）
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+]
+SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_SAMESITE = 'Lax'

@@ -1,29 +1,27 @@
-# backend/accounts/views.py
+# backend/accounts/views.py (修正後の全文)
 
 from django.contrib.auth.views import LoginView
 from django.http import JsonResponse
-# 👇 csrf_exempt は不要になったのでインポートを削除してもOK
-# from django.views.decorators.csrf import csrf_exempt 
-from django.utils.decorators import method_decorator # LoginViewにはまだ必要
+# from django.views.decorators.csrf import csrf_exempt # 削除
+from django.utils.decorators import method_decorator
 import json
-from django.contrib.auth import logout 
+from django.contrib.auth import logout
 from django.db import IntegrityError
 from django.contrib.auth.models import User
 from django.middleware.csrf import get_token
-from django.views.decorators.csrf import ensure_csrf_cookie 
-
+from django.views.decorators.csrf import ensure_csrf_cookie # インポート
 
 @ensure_csrf_cookie 
 def get_csrf_token(request):
     """CSRFトークンをクッキーにセットして返す"""
     return JsonResponse({'detail': 'CSRF cookie set'})
 
-# 👇 @csrf_exempt を削除
+# @csrf_exempt を削除
 def api_root(request):
     """ルートパスがアクセスされたときに実行される"""
     return JsonResponse({'status': 'ok', 'message': 'Django backend is running correctly. Access /api/login/ for authentication.'})
 
-# 👇 @method_decorator(csrf_exempt...) を削除
+# @method_decorator(csrf_exempt...) を削除
 class APILoginView(LoginView):
      def post(self, request, *args, **kwargs):
          super().post(request, *args, **kwargs)
@@ -33,14 +31,14 @@ class APILoginView(LoginView):
          else:
              return JsonResponse({'success': False, 'message': '認証情報が不正です'}, status=401)
 
-# 👇 @csrf_exempt を削除
+# @csrf_exempt を削除
 def api_logout(request):
     if request.method == 'POST':
         logout(request)
         return JsonResponse({'success': True})
     return JsonResponse({'error': 'POSTメソッドが必要です'}, status=405)
 
-# 👇 @csrf_exempt を削除
+# @csrf_exempt を削除
 def api_signup(request):
     """新しいユーザーアカウントを作成するAPI"""
     if request.method == 'POST':
